@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+###################
+# private functions
+###################
+
+__pps_print_usage() {
+	echo "usage:"
+	echo "pps <profile>		: activates the defined <profile>"
+	#echo "des clear			: clear the actual profile"
+}
+
+######
+# main
+######
+
+pps() {
+	if [ $# -ne 1 ] ; then
+		_print_usage
+		return 1
+	fi
+}
+
