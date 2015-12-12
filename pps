@@ -23,6 +23,7 @@ __pps_init_config() {
 
 __pps_switch-profile() {
 	$SHELL "${PPS_CONFIG}/$1"
+	export LP_PS1_PREFIX="{$1} "
 }
 
 ######
