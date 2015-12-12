@@ -39,6 +39,10 @@ pps() {
 
 	if [ -f "${PPS_CONFIG}/$1" ] ; then
 		__pps_switch-profile "$1"
+	else
+		echo "Unknown profile: $1"
+		__pps_print_usage
+		return 1
 	fi
 }
 
