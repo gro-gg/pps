@@ -1,0 +1,5 @@
+#/bin/bash
+_pps_profile="profile-name"
+
+echo "enabling ${_pps_profile} ..."
+

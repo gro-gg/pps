@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PPS_CONFIG=~/.config/pps/
+PPS_CONFIG=~/.config/pps
 
 ###################
 # private functions
@@ -21,7 +21,9 @@ __pps_init_config() {
 	fi
 }
 
-
+__pps_switch-profile() {
+	$SHELL "${PPS_CONFIG}/$1"
+}
 
 ######
 # main
@@ -31,8 +33,12 @@ pps() {
 	__pps_init_config
 
 	if [ $# -ne 1 ] ; then
-		_print_usage
+		__pps_print_usage
 		return 1
+	fi
+
+	if [ -f "${PPS_CONFIG}/$1" ] ; then
+		__pps_switch-profile "$1"
 	fi
 }
 
