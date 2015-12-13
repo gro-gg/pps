@@ -8,8 +8,8 @@ PPS_CONFIG=~/.config/pps
 
 __pps_print_usage() {
 	echo "usage:"
-	echo "pps <profile>		: activates the defined <profile>"
-	#echo "des clear			: clear the actual profile"
+	echo "pps <profile>     : activates the defined <profile>"
+	echo "pps clear         : clear the actual profile"
 }
 
 __pps_init_config() {
@@ -26,6 +26,11 @@ __pps_switch-profile() {
 	export LP_PS1_PREFIX="{$1} "
 }
 
+__pps_disable-profile() {
+    unset LP_PS1_PREFIX
+}
+
+
 ######
 # main
 ######
@@ -41,9 +46,13 @@ pps() {
 	if [ -f "${PPS_CONFIG}/$1" ] ; then
 		__pps_switch-profile "$1"
 	else
-		echo "Unknown profile: $1"
-		__pps_print_usage
-		return 1
+		if [ "$1" == "clear" ] ; then
+			__pps_disable-profile
+		else
+			echo "Unknown profile: $1"
+			__pps_print_usage
+			return 1
+		fi
 	fi
 }
 
