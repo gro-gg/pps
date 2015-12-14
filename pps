@@ -30,6 +30,9 @@ __pps_disable-profile() {
     unset LP_PS1_PREFIX
 }
 
+contains() {
+	[[ $1 =~ (^| )$2($| ) ]] && return 0 || return 1
+}
 
 ######
 # main
