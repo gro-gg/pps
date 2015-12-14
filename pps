@@ -27,10 +27,11 @@ __pps_switch-profile() {
 }
 
 __pps_disable-profile() {
+	echo "disabling profile"
     unset LP_PS1_PREFIX
 }
 
-contains() {
+listcontains() {
 	[[ $1 =~ (^| )$2($| ) ]] && return 0 || return 1
 }
 
@@ -49,7 +50,7 @@ pps() {
 	if [ -f "${PPS_CONFIG}/$1" ] ; then
 		__pps_switch-profile "$1"
 	else
-		if [ "$1" == "clear" ] ; then
+		if listcontains "clear clean disable" "$1" ; then
 			__pps_disable-profile
 		else
 			echo "Unknown profile: $1"
