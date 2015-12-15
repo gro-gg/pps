@@ -2,6 +2,8 @@
 
 PPS_CONFIG=~/.config/pps
 
+DEBUG=1
+
 ###################
 # private functions
 ###################
@@ -22,11 +24,13 @@ __pps_init_config() {
 }
 
 __pps_switch-profile() {
+	logDebug "__pps_switch-profile() $1"
 	$SHELL "${PPS_CONFIG}/$1"
 	export LP_PS1_PREFIX="{$1} "
 }
 
 __pps_disable-profile() {
+	logDebug "__pps_disable-profile()"
 	echo "disabling profile"
     unset LP_PS1_PREFIX
 }
@@ -34,6 +38,13 @@ __pps_disable-profile() {
 listcontains() {
 	[[ $1 =~ (^| )$2($| ) ]] && return 0 || return 1
 }
+
+logDebug() {
+    if listcontains "ON on 1" "${DEBUG}" ] ; then
+	   echo "[DEBUG]: ${*}" 
+	fi
+}
+
 
 ######
 # main
