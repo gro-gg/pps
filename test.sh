@@ -10,17 +10,25 @@ assertEqual() {
 	fi
 }
 
+assertReturn0() {
+	assertEqual $? 0 "$1"
+}
+
+assertReturn1() {
+	assertEqual $? 1 "$1"
+}
+
 
 # tests
 
 list="foo bar"
 
 listcontains "$list" "f"
-assertEqual $? 1 "list contains f"
+assertReturn1 "list contains f"
 
 listcontains "$list" "foo"
-assertEqual $? 0 "list contains foo"
+assertReturn0 "list contains foo"
 
 listcontains "$list" "bar"
-assertEqual $? 0 "list contains bar"
+assertReturn0 "list contains bar"
 
