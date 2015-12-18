@@ -15,8 +15,8 @@ logDebug() {
 
 assertEqual() {
 	if [ "$1" != "$2" ] ; then
-		echo "Test failed: $3"
-		logDebug "   : '$1' is not equal '$2'"
+		echo "Test failed $testfile: $3"
+		logDebug "  '$1' is not equal '$2'"
 	fi
 }
 
@@ -33,6 +33,7 @@ assertReturn1() {
 # execute tests
 
 for t in $(ls -1 test/*) ; do
+	testfile=$(basename "$t")
 	. "$t"
 done
 
