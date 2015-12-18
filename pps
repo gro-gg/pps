@@ -2,7 +2,7 @@
 
 PPS_CONFIG=~/.config/pps
 
-DEBUG=1
+#DEBUG=1
 
 ###################
 # private functions
@@ -40,7 +40,7 @@ listcontains() {
 }
 
 logDebug() {
-    if listcontains "ON on 1" "${DEBUG}" ] ; then
+    if listcontains "ON on 1" "${DEBUG}" ; then
 	   echo "[DEBUG]: ${*}" 
 	fi
 }
