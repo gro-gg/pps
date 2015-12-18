@@ -30,16 +30,9 @@ assertReturn1() {
 
 
 
-# tests
+# execute tests
 
-list="foo bar"
-
-listcontains "$list" "f"
-assertReturn1 "list contains f"
-
-listcontains "$list" "foo"
-assertReturn0 "list contains foo"
-
-listcontains "$list" "bar"
-assertReturn0 "list contains bar"
+for t in $(ls -1 test/*) ; do
+	. "$t"
+done
 
