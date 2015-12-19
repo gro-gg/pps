@@ -11,7 +11,7 @@ DEBUG=1
 __pps_print_usage() {
 	echo "usage:"
 	echo "pps <profile>     : activates the defined <profile>"
-	echo "pps clear         : clear the actual profile"
+	echo "pps clean         : clear the actual profile"
 }
 
 __pps_init_config() {
@@ -49,7 +49,8 @@ __pps_complete() {
     cur_word="${COMP_WORDS[COMP_CWORD]}"
     prev_word="${COMP_WORDS[COMP_CWORD-1]}"
 
-    profile_list=$(ls -1 "${PPS_CONFIG}"/)
+    profile_list=$(ls -1 "${PPS_CONFIG}"/ |grep -v template)
+	profile_list+=" clean"
 
     if [ $prev_word == "pps" ] ; then
         COMPREPLY=( $(compgen -W "${profile_list}" -- ${cur_word}) )
