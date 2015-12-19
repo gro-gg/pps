@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# mock functions
+__pps_init_config() {
+	:
+}
+__pps_switch-profile() {
+	:
+}
+listcontains() {
+	:
+}
+__pps_disable-profile() {
+	:
+}
+__pps_print_usage() {
+	:
+}
+
+
+# should print usage
+__pps_print_usage() {
+    echo "__pps_print_usage"
+}
+pps | assertEcho "__pps_print_usage" "should print usage"
+
+
+
+

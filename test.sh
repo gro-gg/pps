@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# source the pps file
-. pps
+# configure the file to test
+FILE_TO_TEST=pps
+
+
+# functions
 
 logDebug() {
     if [ "${DEBUG}" == 1 ] ; then
@@ -28,11 +31,15 @@ assertReturn1() {
 	assertEqual $? 1 "$1"
 }
 
-
+assertEcho() {
+	read echo
+	assertEqual "$echo" "$1" "$2"
+}
 
 # execute tests
 
 for t in $(ls -1 test/*) ; do
+	. $FILE_TO_TEST
 	testfile=$(basename "$t")
 	. "$t"
 done
