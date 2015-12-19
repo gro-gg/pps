@@ -2,7 +2,7 @@
 
 PPS_CONFIG=~/.config/pps
 
-#DEBUG=1
+DEBUG=1
 
 ###################
 # private functions
@@ -45,6 +45,18 @@ __pps_disable-profile() {
     unset LP_PS1_PREFIX
 }
 
+__pps_complete() {
+    cur_word="${COMP_WORDS[COMP_CWORD]}"
+    prev_word="${COMP_WORDS[COMP_CWORD-1]}"
+
+    profile_list=$(ls -1 "${PPS_CONFIG}"/)
+
+    if [ $prev_word == "pps" ] ; then
+        COMPREPLY=( $(compgen -W "${profile_list}" -- ${cur_word}) )
+    fi
+    return 0
+}
+
 listcontains() {
 	[[ $1 =~ (^| )$2($| ) ]] && return 0 || return 1
 }
@@ -55,10 +67,11 @@ logDebug() {
 	fi
 }
 
-
 ######
 # main
 ######
+
+complete -F __pps_complete pps
 
 pps() {
 	__pps_init_config
