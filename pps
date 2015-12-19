@@ -23,15 +23,25 @@ __pps_init_config() {
 	fi
 }
 
+__pps_set-up() {
+	:
+}
+
+__pps_tear-down() {
+	:
+}
+
 __pps_switch-profile() {
 	logDebug "__pps_switch-profile() $1"
-	$SHELL "${PPS_CONFIG}/$1"
+	__pps_tear-down
+	. "${PPS_CONFIG}/$1"
+	__pps_set-up
 	export LP_PS1_PREFIX="{$1} "
 }
 
 __pps_disable-profile() {
 	logDebug "__pps_disable-profile()"
-	echo "disabling profile"
+	__pps_tear-down
     unset LP_PS1_PREFIX
 }
 

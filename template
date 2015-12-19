@@ -1,5 +1,11 @@
 #/bin/bash
 _pps_profile="profile-name"
 
-echo "enabling ${_pps_profile} ..."
+__pps_set-up() {
+	echo "enabling ${_pps_profile} ..."
+}
+
+__pps_tear-down() {
+	echo "disabling ${_pps_profile} ..."
+}
 
