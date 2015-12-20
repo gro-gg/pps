@@ -58,6 +58,15 @@ __pps_complete() {
     return 0
 }
 
+__pps_add_to_path() {
+	if [ -d $1 ] ; then
+		logDebug "adding '$1' to PATH variable"
+		export PATH="$1:$PATH"
+	else
+		echo "Cannot add '$1' to PATH variable, it is not a valid directory"
+	fi
+}
+
 listcontains() {
 	[[ $1 =~ (^| )$2($| ) ]] && return 0 || return 1
 }
@@ -71,6 +80,9 @@ logDebug() {
 ######
 # main
 ######
+
+#first backup PATH
+PATH_BACKUP="$PATH"
 
 complete -F __pps_complete pps
 
