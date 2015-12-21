@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# The config directory:
 PPS_CONFIG=~/.config/pps
 
-DEBUG=1
+# Desable this option for debug output:
+#DEBUG=1
 
 ###################
 # private functions
@@ -12,6 +14,7 @@ __pps_print_usage() {
 	echo "usage:"
 	echo "pps <profile>     : activates the defined <profile>"
 	echo "pps clean         : clear the actual profile"
+	echo "pps status        : prints the current profile"
 }
 
 __pps_init_config() {
@@ -36,13 +39,23 @@ __pps_switch-profile() {
 	__pps_tear-down
 	. "${PPS_CONFIG}/$1"
 	__pps_set-up
+	export _pps_current_project="$1"
 	export LP_PS1_PREFIX="{$1} "
 }
 
 __pps_disable-profile() {
 	logDebug "__pps_disable-profile()"
 	__pps_tear-down
+	unset _pps_current_project
     unset LP_PS1_PREFIX
+}
+
+__pps_print_status() {
+	if [ -z ${_pps_current_project} ] ; then
+		echo "Current project: No project selected!"
+	else
+		echo "Current project: ${_pps_current_project}"
+	fi
 }
 
 __pps_complete() {
@@ -99,6 +112,8 @@ pps() {
 	else
 		if listcontains "clear clean disable" "$1" ; then
 			__pps_disable-profile
+		elif listcontains "status" "$1" ; then
+			__pps_print_status
 		else
 			echo "Unknown profile: $1"
 			__pps_print_usage
