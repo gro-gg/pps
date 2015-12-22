@@ -17,6 +17,7 @@ __pps_print_usage() {
 	echo "pps status        : prints the current profile"
 }
 
+# initializes a new config directory in $_pps_config if it doesn't exist
 __pps_init_config() {
 	if [ ! -d "${_pps_config}" ] ; then
 		echo "pps config directory ${_pps_config} does not exist!"
@@ -26,14 +27,16 @@ __pps_init_config() {
 	fi
 }
 
+# functions will be overritten by sourcing the profile config files
 __pps_set-up() {
 	:
 }
-
 __pps_tear-down() {
 	:
 }
 
+# swtich the current profile
+# $1: the profile name
 __pps_switch-profile() {
 	logDebug "__pps_switch-profile() $1"
 	__pps_tear-down
@@ -50,6 +53,7 @@ __pps_disable-profile() {
     unset LP_PS1_PREFIX
 }
 
+# print the current profile
 __pps_print_status() {
 	if [ -z ${_pps_current_project} ] ; then
 		echo "Current project: No project selected!"
@@ -58,6 +62,7 @@ __pps_print_status() {
 	fi
 }
 
+# function used for shell completion
 __pps_complete() {
     cur_word="${COMP_WORDS[COMP_CWORD]}"
     prev_word="${COMP_WORDS[COMP_CWORD-1]}"
@@ -71,6 +76,7 @@ __pps_complete() {
     return 0
 }
 
+# adds a directory to PATH variable
 __pps_add_to_path() {
 	if [ -d $1 ] ; then
 		logDebug "adding '$1' to PATH variable"
@@ -97,6 +103,7 @@ logDebug() {
 #first backup PATH
 PATH_BACKUP="$PATH"
 
+# enable shell completion
 complete -F __pps_complete pps
 
 pps() {
