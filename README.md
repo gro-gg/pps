@@ -33,6 +33,6 @@ You can see with profile is laoded by typing:
 
     [user:~] $ pps status
 
-If you are using [Liquid Prompt](https://github.com/gro-gg/liquidprompt), the current profile will be displayed at the beginning of your prompt:
+If you are using [Liquid Prompt](https://github.com/nojhan/liquidprompt), the current profile will be displayed at the beginning of your prompt:
 
     {project-name} [user:~] $
