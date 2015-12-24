@@ -69,6 +69,7 @@ __pps_complete() {
 
     profile_list=$(ls -1 "${_pps_config}"/ |grep -v template)
 	profile_list+=" clean"
+	profile_list+=" status"
 
     if [ $prev_word == "pps" ] ; then
         COMPREPLY=( $(compgen -W "${profile_list}" -- ${cur_word}) )
