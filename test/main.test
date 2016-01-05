@@ -24,7 +24,7 @@ pps | assertEcho "__pps_print_usage" "should print usage"
 
 
 # should switch profile
-PPS_CONFIG=/etc
+_pps_config=/etc
 pps hostname | assertEcho "__pps_switch-profile" "should switch profile"
 
 
