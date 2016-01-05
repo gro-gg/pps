@@ -64,7 +64,18 @@ __pps_switch-profile() {
 	. "${_pps_config}/$1"
 	__pps_set-up
 	export _pps_current_project="$1"
-	export LP_PS1_PREFIX="{$1} "
+	__pps_set_lp_prompt
+}
+
+__pps_switch-task() {
+	logDebug "__pps_switch-task() $1"
+	export _pps_current_task="$1"
+	__pps_set_lp_prompt
+}
+
+__pps_set_lp_prompt() {
+	logDebug "__pps_set_lp_prompt()"
+	export LP_PS1_PREFIX="${_pps_current_project} "
 }
 
 __pps_disable-profile() {
