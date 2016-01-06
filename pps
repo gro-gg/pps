@@ -36,6 +36,7 @@ __pps_print_usage() {
 	echo "pps <profile>     : activates the defined <profile>"
 	echo "pps clean         : clear the actual profile"
 	echo "pps status        : prints the current profile"
+	echo "pps task <task>   : activates the defined <task>"
 }
 
 # initializes a new config directory in $_pps_config if it doesn't exist
@@ -67,7 +68,7 @@ __pps_switch-profile() {
 	__pps_set_lp_prompt
 }
 
-__pps_switch-task() {
+__pps_switch_task() {
 	logDebug "__pps_switch-task() $1"
 	export _pps_current_task="$1"
 	__pps_set_lp_prompt
@@ -75,7 +76,7 @@ __pps_switch-task() {
 
 __pps_set_lp_prompt() {
 	logDebug "__pps_set_lp_prompt()"
-	export LP_PS1_PREFIX="${_pps_current_project} "
+	export LP_PS1_PREFIX="${_pps_current_project}(${_pps_current_task}) "
 }
 
 __pps_disable-profile() {
@@ -142,7 +143,7 @@ complete -F __pps_complete pps
 pps() {
 	__pps_init_config
 
-	if [ $# -ne 1 ] ; then
+	if [ $# -lt 1 ] ; then
 		__pps_print_usage
 		return 1
 	fi
@@ -154,6 +155,12 @@ pps() {
 			__pps_disable-profile
 		elif listcontains "status" "$1" ; then
 			__pps_print_status
+		elif listcontains "task" "$1" ; then
+			#if [ "$#" -ne 2 ] ; then
+			#	__pps_print_usage
+			#	return 1
+			#fi
+			__pps_switch_task "$2"
 		else
 			echo "Unknown profile: $1"
 			__pps_print_usage

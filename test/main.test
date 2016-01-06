@@ -7,6 +7,9 @@ __pps_init_config() {
 __pps_switch-profile() {
 	echo "__pps_switch-profile"
 }
+__pps_switch_task() {
+	echo "__pps_switch_task"
+}
 listcontains() {
 	return 1 
 }
@@ -50,4 +53,16 @@ __pps_print_usage() {
 }
 
 
+# should switch task
+listcontains() {
+    if [[ $2 == $1 ]] ; then
+		return 0
+	fi
+	return 1
+}
+pps task 1234 | assertEcho "__pps_switch_task" "should switch task"
 
+__pps_switch_task() {
+	echo "$1"
+}
+pps task my-task | assertEcho "my-task" "should switch task to my-task"
