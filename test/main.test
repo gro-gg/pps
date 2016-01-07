@@ -66,3 +66,7 @@ __pps_switch_task() {
 	echo "$1"
 }
 pps task my-task | assertEcho "my-task" "should switch task to my-task"
+
+pps task | assertEcho "__pps_print_usage" "should not switch task"
+
+

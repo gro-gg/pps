@@ -156,10 +156,10 @@ pps() {
 		elif listcontains "status" "$1" ; then
 			__pps_print_status
 		elif listcontains "task" "$1" ; then
-			#if [ "$#" -ne 2 ] ; then
-			#	__pps_print_usage
-			#	return 1
-			#fi
+			if [ "$#" -ne 2 ] ; then
+				__pps_print_usage
+				return 1
+			fi
 			__pps_switch_task "$2"
 		else
 			echo "Unknown profile: $1"
