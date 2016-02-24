@@ -2,22 +2,22 @@
 
 # mock functions
 __pps_init_config() {
-	:
+    :
 }
 __pps_switch-profile() {
-	echo "__pps_switch-profile"
+    echo "__pps_switch-profile"
 }
 __pps_switch_task() {
-	echo "__pps_switch_task"
+    echo "__pps_switch_task"
 }
 listcontains() {
-	return 1 
+    return 1 
 }
 __pps_disable-profile() {
-	echo "__pps_disable-profile"
+    echo "__pps_disable-profile"
 }
 __pps_print_usage() {
-	echo "__pps_print_usage"
+    echo "__pps_print_usage"
 }
 
 
@@ -34,9 +34,9 @@ pps hostname | assertEcho "__pps_switch-profile" "should switch profile"
 # should disable profile
 listcontains() {
     if [[ $2 == "clean" ]] || [[ $2 == "clear" ]] || [[ $2 == "disable" ]] ; then
-		return 0
-	fi
-	return 1
+        return 0
+    fi
+    return 1
 }
 pps clean | assertEcho "__pps_disable-profile" "should disable profile"
 pps clear | assertEcho "__pps_disable-profile" "should disable profile"
@@ -56,14 +56,14 @@ __pps_print_usage() {
 # should switch task
 listcontains() {
     if [[ $2 == $1 ]] ; then
-		return 0
-	fi
-	return 1
+        return 0
+    fi
+    return 1
 }
 pps task 1234 | assertEcho "__pps_switch_task" "should switch task"
 
 __pps_switch_task() {
-	echo "$1"
+    echo "$1"
 }
 pps task my-task | assertEcho "my-task" "should switch task to my-task"
 

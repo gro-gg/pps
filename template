@@ -2,14 +2,14 @@
 _pps_profile="profile-name"
 
 __pps_set-up() {
-	echo "enabling ${_pps_profile} ..."
-	#add directories to path
-	#__pps_add_to_path /foo/bar
+    echo "enabling ${_pps_profile} ..."
+    #add directories to path
+    #__pps_add_to_path /foo/bar
 }
 
 __pps_tear-down() {
-	echo "disabling ${_pps_profile} ..."
-	#reset path
-	#export PATH=${PATH_BACKUP}
+    echo "disabling ${_pps_profile} ..."
+    #reset path
+    #export PATH=${PATH_BACKUP}
 }
 
