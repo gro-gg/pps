@@ -32,67 +32,71 @@ _pps_config=~/.config/pps
 ###################
 
 __pps_print_usage() {
-	echo "usage:"
-	echo "pps <profile>     : activates the defined <profile>"
-	echo "pps clean         : clear the actual profile"
-	echo "pps status        : prints the current profile"
-	echo "pps task <task>   : activates the defined <task>"
+    echo "usage:"
+    echo "pps <profile>     : activates the defined <profile>"
+    echo "pps clean         : clear the actual profile"
+    echo "pps status        : prints the current profile"
+    echo "pps task <task>   : activates the defined <task>"
 }
 
 # initializes a new config directory in $_pps_config if it doesn't exist
 __pps_init_config() {
-	if [ ! -d "${_pps_config}" ] ; then
-		echo "pps config directory ${_pps_config} does not exist!"
-		echo "Creating initial config in directory ${_pps_config}"
-		mkdir -p "${_pps_config}"
-		cp template "${_pps_config}"/template
-	fi
+    if [ ! -d "${_pps_config}" ] ; then
+        echo "pps config directory ${_pps_config} does not exist!"
+        echo "Creating initial config in directory ${_pps_config}"
+        mkdir -p "${_pps_config}"
+        cp template "${_pps_config}"/template
+    fi
 }
 
 # functions will be overritten by sourcing the profile config files
 __pps_set-up() {
-	:
+    :
 }
 __pps_tear-down() {
-	:
+    :
 }
 
 # swtich the current profile
 # $1: the profile name
 __pps_switch-profile() {
-	logDebug "__pps_switch-profile() $1"
-	__pps_tear-down
-	. "${_pps_config}/$1"
-	__pps_set-up
-	export _pps_current_project="$1"
-	__pps_set_lp_prompt
+    logDebug "__pps_switch-profile() $1"
+    __pps_tear-down
+    . "${_pps_config}/$1"
+    __pps_set-up
+    export _pps_current_project="$1"
+    __pps_set_lp_prompt
 }
 
 __pps_switch_task() {
-	logDebug "__pps_switch-task() $1"
-	export _pps_current_task="$1"
-	__pps_set_lp_prompt
+    logDebug "__pps_switch-task() $1"
+    export _pps_current_task="$1"
+    __pps_set_lp_prompt
 }
 
 __pps_set_lp_prompt() {
-	logDebug "__pps_set_lp_prompt()"
-	export LP_PS1_PREFIX="${_pps_current_project}(${_pps_current_task}) "
+    logDebug "__pps_set_lp_prompt()"
+    LP_PS1_PREFIX="${_pps_current_project}"
+    if [ ! -z ${_pps_current_task} ] ; then
+      LP_PS1_PREFIX="${LP_PS1_PREFIX}(${_pps_current_task})"
+    fi
+    export LP_PS1_PREFIX="${LP_PS1_PREFIX} "
 }
 
 __pps_disable-profile() {
-	logDebug "__pps_disable-profile()"
-	__pps_tear-down
-	unset _pps_current_project
+    logDebug "__pps_disable-profile()"
+    __pps_tear-down
+    unset _pps_current_project
     unset LP_PS1_PREFIX
 }
 
 # print the current profile
 __pps_print_status() {
-	if [ -z ${_pps_current_project} ] ; then
-		echo "Current project: No project selected!"
-	else
-		echo "Current project: ${_pps_current_project}"
-	fi
+    if [ -z ${_pps_current_project} ] ; then
+        echo "Current project: No project selected!"
+    else
+        echo "Current project: ${_pps_current_project}"
+    fi
 }
 
 # function used for shell completion
@@ -101,8 +105,8 @@ __pps_complete() {
     prev_word="${COMP_WORDS[COMP_CWORD-1]}"
 
     profile_list=$(\ls -1 "${_pps_config}"/ |grep -v template)
-	profile_list+=" clean"
-	profile_list+=" status"
+    profile_list+=" clean"
+    profile_list+=" status"
 
     if [ $prev_word == "pps" ] ; then
         COMPREPLY=( $(compgen -W "${profile_list}" -- ${cur_word}) )
@@ -112,22 +116,22 @@ __pps_complete() {
 
 # adds a directory to PATH variable
 __pps_add_to_path() {
-	if [ -d $1 ] ; then
-		logDebug "adding '$1' to PATH variable"
-		export PATH="$1:$PATH"
-	else
-		echo "Cannot add '$1' to PATH variable, it is not a valid directory"
-	fi
+    if [ -d $1 ] ; then
+        logDebug "adding '$1' to PATH variable"
+        export PATH="$1:$PATH"
+    else
+        echo "Cannot add '$1' to PATH variable, it is not a valid directory"
+    fi
 }
 
 listcontains() {
-	[[ $1 =~ (^| )$2($| ) ]] && return 0 || return 1
+    [[ $1 =~ (^| )$2($| ) ]] && return 0 || return 1
 }
 
 logDebug() {
     if listcontains "ON on 1" "${DEBUG}" ; then
-	   echo "[DEBUG]: ${*}" 
-	fi
+       echo "[DEBUG]: ${*}" 
+    fi
 }
 
 ######
@@ -141,31 +145,31 @@ PATH_BACKUP="$PATH"
 complete -F __pps_complete pps
 
 pps() {
-	__pps_init_config
+    __pps_init_config
 
-	if [ $# -lt 1 ] ; then
-		__pps_print_usage
-		return 1
-	fi
+    if [ $# -lt 1 ] ; then
+        __pps_print_usage
+        return 1
+    fi
 
-	if [ -f "${_pps_config}/$1" ] ; then
-		__pps_switch-profile "$1"
-	else
-		if listcontains "clear clean disable" "$1" ; then
-			__pps_disable-profile
-		elif listcontains "status" "$1" ; then
-			__pps_print_status
-		elif listcontains "task" "$1" ; then
-			if [ "$#" -ne 2 ] ; then
-				__pps_print_usage
-				return 1
-			fi
-			__pps_switch_task "$2"
-		else
-			echo "Unknown profile: $1"
-			__pps_print_usage
-			return 1
-		fi
-	fi
+    if [ -f "${_pps_config}/$1" ] ; then
+        __pps_switch-profile "$1"
+    else
+        if listcontains "clear clean disable" "$1" ; then
+            __pps_disable-profile
+        elif listcontains "status" "$1" ; then
+            __pps_print_status
+        elif listcontains "task" "$1" ; then
+            if [ "$#" -ne 2 ] ; then
+                __pps_print_usage
+                return 1
+            fi
+            __pps_switch_task "$2"
+        else
+            echo "Unknown profile: $1"
+            __pps_print_usage
+            return 1
+        fi
+    fi
 }
 
