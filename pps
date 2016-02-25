@@ -23,6 +23,7 @@
 
 # The config directory:
 _pps_config=~/.config/pps
+_pps_task_cache=~/.cache/pps
 
 # Desable this option for debug output:
 #DEBUG=1
@@ -46,6 +47,12 @@ __pps_init_config() {
         echo "Creating initial config in directory ${_pps_config}"
         mkdir -p "${_pps_config}"
         cp template "${_pps_config}"/template
+    fi
+}
+
+__pps_init_cache() {
+    if [ ! -d "${_pps_task_cache}" ] ; then
+        mkdir -p "${_pps_task_cache}"
     fi
 }
 
@@ -93,6 +100,10 @@ __pps_disable-profile() {
     __pps_tear-down
     unset _pps_current_project
     unset LP_PS1_PREFIX
+}
+
+__pps_write_task_cache() {
+    :
 }
 
 # print the current profile
@@ -151,6 +162,7 @@ complete -F __pps_complete pps
 
 pps() {
     __pps_init_config
+    __pps_init_cache
 
     if [ $# -lt 1 ] ; then
         __pps_print_usage
