@@ -70,15 +70,20 @@ __pps_switch-profile() {
 
 __pps_switch_task() {
     logDebug "__pps_switch-task() $1"
-    export _pps_current_task="$1"
-    __pps_set_lp_prompt
+    if [ ! -z ${_pps_current_project} ] ; then
+        export _pps_current_task="$1"
+        __pps_set_lp_prompt
+    else
+        echo "Cannot switch task, first choose a profile!\n"
+        __pps_print_usage
+    fi
 }
 
 __pps_set_lp_prompt() {
     logDebug "__pps_set_lp_prompt()"
     LP_PS1_PREFIX="${_pps_current_project}"
     if [ ! -z ${_pps_current_task} ] ; then
-      LP_PS1_PREFIX="${LP_PS1_PREFIX}(${_pps_current_task})"
+        LP_PS1_PREFIX="${LP_PS1_PREFIX}(${_pps_current_task})"
     fi
     export LP_PS1_PREFIX="${LP_PS1_PREFIX} "
 }
