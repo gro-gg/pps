@@ -88,7 +88,7 @@ __pps_complete() {
     cur_word="${COMP_WORDS[COMP_CWORD]}"
     prev_word="${COMP_WORDS[COMP_CWORD-1]}"
 
-    profile_list=$(ls -1 "${_pps_config}"/ |grep -v template)
+    profile_list=$(\ls -1 "${_pps_config}"/ |grep -v template)
 	profile_list+=" clean"
 	profile_list+=" status"
 
