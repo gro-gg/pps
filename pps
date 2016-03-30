@@ -80,6 +80,7 @@ __pps_switch_task() {
     if [ ! -z ${_pps_current_project} ] ; then
         export _pps_current_task="$1"
         __pps_set_lp_prompt
+        __pps_write_task_cache "$1"
     else
         echo "Cannot switch task, first choose a profile!\n"
         __pps_print_usage
