@@ -122,16 +122,21 @@ __pps_print_status() {
 
 # function used for shell completion
 __pps_complete() {
+    local complete_list
+    
     cur_word="${COMP_WORDS[COMP_CWORD]}"
     prev_word="${COMP_WORDS[COMP_CWORD-1]}"
 
-    profile_list=$(\ls -1 "${_pps_config}"/ |grep -v template)
-    profile_list+=" clean"
-    profile_list+=" status"
-
     if [ $prev_word == "pps" ] ; then
-        COMPREPLY=( $(compgen -W "${profile_list}" -- ${cur_word}) )
+        complete_list=$(\ls -1 "${_pps_config}"/ |grep -v template)
+        complete_list+=" clean"
+        complete_list+=" status"
+        complete_list+=" task"
+    elif [ $prev_word == "task" ] ; then
+        cache_file="${_pps_task_cache}/${_pps_current_project}"
+        complete_list=$(cat $cache_file)
     fi
+    COMPREPLY=( $(compgen -W "${complete_list}" -- ${cur_word}) )
     return 0
 }
 
