@@ -102,8 +102,12 @@ __pps_disable-profile() {
     unset LP_PS1_PREFIX
 }
 
+# $1: task to write
 __pps_write_task_cache() {
-    :
+    local cache_file
+    cache_file="${_pps_task_cache}/${_pps_current_project}"
+    logDebug "Writing new task $1 to chache file ${cache_file} if not exists"
+    grep "^$1$" "${cache_file}" > /dev/null 2>&1 || echo "$1" >> "${cache_file}"
 }
 
 # print the current profile

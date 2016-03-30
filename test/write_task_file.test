@@ -1,0 +1,22 @@
+#!/bin/bash
+
+DEBUG=0
+_pps_current_project=test
+_pps_task_cache=/tmp
+
+cache_file="${_pps_task_cache}/${_pps_current_project}"
+
+rm "$cache_file" 2> /dev/null
+
+test -f ${cache_file}
+assertReturn1 "chache file already exists"
+
+__pps_write_task_cache Task1
+__pps_write_task_cache Task2
+__pps_write_task_cache Task2
+__pps_write_task_cache Task3
+
+
+lines=$(wc -l "$cache_file" | cut -f1 -d' ')
+assertEqual $lines 3 "not 2 lines written"
+
