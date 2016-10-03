@@ -132,7 +132,7 @@ __pps_complete() {
         complete_list+=" clean"
         complete_list+=" status"
         complete_list+=" task"
-    elif [ $prev_word == "task" ] ; then
+    elif [[ $prev_word == "task" && ! -z ${_pps_current_project} ]] ; then
         cache_file="${_pps_task_cache}/${_pps_current_project}"
         complete_list=$(cat $cache_file)
     fi
