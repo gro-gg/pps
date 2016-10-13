@@ -103,6 +103,13 @@ __pps_disable-profile() {
     unset LP_PS1_PREFIX
 }
 
+
+__pps_disable_task() {
+    logDebug "__pps_disable_task()"
+    unset _pps_current_task
+    __pps_set_lp_prompt
+}
+
 # $1: task to write
 __pps_write_task_cache() {
     local cache_file
@@ -135,6 +142,7 @@ __pps_complete() {
     elif [[ $prev_word == "task" && ! -z ${_pps_current_project} ]] ; then
         cache_file="${_pps_task_cache}/${_pps_current_project}"
         complete_list=$(cat $cache_file)
+        complete_list+=" clean"
     fi
     COMPREPLY=( $(compgen -W "${complete_list}" -- ${cur_word}) )
     return 0
@@ -191,7 +199,11 @@ pps() {
                 __pps_print_usage
                 return 1
             fi
-            __pps_switch_task "$2"
+            if listcontains "clear clean disable" "$2" ; then
+                __pps_disable_task
+            else
+                __pps_switch_task "$2"
+            fi
         else
             echo "Unknown profile: $1"
             __pps_print_usage

@@ -16,6 +16,9 @@ __pps_disable-profile() {
 __pps_print_usage() {
     echo "__pps_print_usage"
 }
+__pps_disable_task() {
+    echo "__pps_disable_task"
+}
 
 
 # should print usage
@@ -54,4 +57,5 @@ pps task my-task | assertEcho "my-task" "should switch task to my-task"
 
 pps task | assertEcho "__pps_print_usage" "should not switch task"
 
+pps task clean | assertEcho "__pps_disable_task" "should disable task"
 
