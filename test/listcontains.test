@@ -3,11 +3,11 @@
 list="foo bar"
 
 listcontains "$list" "f"
-assertReturn1 "list contains f"
+assertReturn1 "list should not contain f"
 
 listcontains "$list" "foo"
-assertReturn0 "list contains foo"
+assertReturn0 "list should contain foo"
 
 listcontains "$list" "bar"
-assertReturn0 "list contains bar"
+assertReturn0 "list should contain bar"
 

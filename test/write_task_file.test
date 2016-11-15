@@ -9,14 +9,15 @@ cache_file="${_pps_task_cache}/${_pps_current_project}"
 rm "$cache_file" 2> /dev/null
 
 test -f ${cache_file}
-assertReturn1 "chache file already exists"
+assertReturn1 "task file should not exist"
 
 __pps_write_task_cache Task1
 __pps_write_task_cache Task2
-__pps_write_task_cache Task2
 __pps_write_task_cache Task3
-
-
 lines=$(wc -l "$cache_file" | cut -f1 -d' ')
-assertEqual $lines 3 "not 2 lines written"
+assertEqual $lines 3 "should write 3 lines"
+
+__pps_write_task_cache Task2
+lines=$(wc -l "$cache_file" | cut -f1 -d' ')
+assertEqual $lines 3 "should not duplicate line"
 
