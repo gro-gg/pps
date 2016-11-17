@@ -72,28 +72,17 @@ __pps_switch-profile() {
     . "${_pps_config}/$1"
     __pps_set-up
     export _pps_current_project="$1"
-    __pps_set_lp_prompt
 }
 
 __pps_switch_task() {
     logDebug "__pps_switch-task() $1"
     if [ ! -z ${_pps_current_project} ] ; then
         export _pps_current_task="$1"
-        __pps_set_lp_prompt
         __pps_write_task_cache "$1"
     else
         echo "Cannot switch task, first choose a profile!\n"
         __pps_print_usage
     fi
-}
-
-__pps_set_lp_prompt() {
-    logDebug "__pps_set_lp_prompt()"
-    LP_PS1_PREFIX="${_pps_current_project}"
-    if [ ! -z ${_pps_current_task} ] ; then
-        LP_PS1_PREFIX="${LP_PS1_PREFIX}(${_pps_current_task})"
-    fi
-    export LP_PS1_PREFIX="${LP_PS1_PREFIX} "
 }
 
 __pps_disable-profile() {
@@ -107,7 +96,6 @@ __pps_disable-profile() {
 __pps_disable_task() {
     logDebug "__pps_disable_task()"
     unset _pps_current_task
-    __pps_set_lp_prompt
 }
 
 # $1: task to write
@@ -116,6 +104,15 @@ __pps_write_task_cache() {
     cache_file="${_pps_task_cache}/${_pps_current_project}"
     logDebug "Writing new task $1 to chache file ${cache_file} if not exists"
     grep "^$1$" "${cache_file}" > /dev/null 2>&1 || echo "$1" >> "${cache_file}"
+}
+
+__pps_set_lp_prompt() {
+    logDebug "__pps_set_lp_prompt()"
+    LP_PS1_PREFIX="${_pps_current_project}"
+    if [ ! -z ${_pps_current_task} ] ; then
+        LP_PS1_PREFIX="${LP_PS1_PREFIX}(${_pps_current_task})"
+    fi
+    export LP_PS1_PREFIX="${LP_PS1_PREFIX} "
 }
 
 # print the current profile
@@ -210,5 +207,7 @@ pps() {
             return 1
         fi
     fi
+    __pps_set_lp_prompt
+
 }
 
