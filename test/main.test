@@ -32,9 +32,25 @@ pps hostname | assertEcho "__pps_switch-profile" "should switch profile"
 
 
 # should disable profile
-pps clean | assertEcho "__pps_disable-profile" "should disable profile"
-pps clear | assertEcho "__pps_disable-profile" "should disable profile"
-pps disable | assertEcho "__pps_disable-profile" "should disable profile"
+__pps_disable_task() {
+    :
+}
+pps clean | assertEcho "__pps_disable-profile" "disable profile should disable profile"
+pps clear | assertEcho "__pps_disable-profile" "disable profile should disable profile"
+pps disable | assertEcho "__pps_disable-profile" "disable profile should disable profile"
+__pps_disable_task() {
+    echo "__pps_disable_task"
+}
+# disable profile should disable task
+__pps_disable-profile() {
+    :
+}
+pps clean | assertEcho "__pps_disable_task" "disable profile should disable task"
+pps clear | assertEcho "__pps_disable_task" "disable profile should disable task"
+pps disable | assertEcho "__pps_disable_task" "disable profile should disable task"
+__pps_disable-profile() {
+    echo "__pps_disable-profile"
+}
 
 
 # should print unknown profile 
