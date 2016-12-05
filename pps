@@ -108,11 +108,15 @@ __pps_write_task_cache() {
 
 __pps_set_lp_prompt() {
     logDebug "__pps_set_lp_prompt()"
-    LP_PS1_PREFIX="${_pps_current_project}"
-    if [ ! -z ${_pps_current_task} ] ; then
-        LP_PS1_PREFIX="${LP_PS1_PREFIX}(${_pps_current_task})"
+    if [ ! -z ${_pps_current_project} ] ; then
+        LP_PS1_PREFIX="${_pps_current_project}"
+        if [ ! -z ${_pps_current_task} ] ; then
+            LP_PS1_PREFIX="${LP_PS1_PREFIX}(${_pps_current_task})"
+        fi
+        export LP_PS1_PREFIX="${LP_PS1_PREFIX} "
+    else
+        unset LP_PS1_PREFIX
     fi
-    export LP_PS1_PREFIX="${LP_PS1_PREFIX} "
 }
 
 # print the current profile
