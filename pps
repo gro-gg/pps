@@ -66,8 +66,8 @@ __pps_tear-down() {
 
 # swtich the current profile
 # $1: the profile name
-__pps_switch-profile() {
-    logDebug "__pps_switch-profile() $1"
+__pps_switch_profile() {
+    logDebug "__pps_switch_profile() $1"
     __pps_tear-down
     . "${_pps_config}/$1"
     __pps_set-up
@@ -75,7 +75,7 @@ __pps_switch-profile() {
 }
 
 __pps_switch_task() {
-    logDebug "__pps_switch-task() $1"
+    logDebug "__pps_switch_task() $1"
     if [ ! -z ${_pps_current_project} ] ; then
         export _pps_current_task="$1"
         __pps_write_task_cache "$1"
@@ -85,8 +85,8 @@ __pps_switch_task() {
     fi
 }
 
-__pps_disable-profile() {
-    logDebug "__pps_disable-profile()"
+__pps_disable_profile() {
+    logDebug "__pps_disable_profile()"
     __pps_tear-down
     unset _pps_current_project
     unset LP_PS1_PREFIX
@@ -192,11 +192,11 @@ pps() {
     fi
 
     if [ -f "${_pps_config}/$1" ] ; then
-        __pps_switch-profile "$1"
+        __pps_switch_profile "$1"
     else
         if listcontains "clear clean disable" "$1" ; then
             __pps_disable_task
-            __pps_disable-profile
+            __pps_disable_profile
         elif listcontains "status" "$1" ; then
             __pps_print_status
         elif listcontains "task" "$1" ; then
