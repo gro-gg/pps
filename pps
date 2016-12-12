@@ -69,6 +69,7 @@ __pps_tear-down() {
 __pps_switch_profile() {
     logDebug "__pps_switch_profile() $1"
     __pps_tear-down
+    PPS_ENABLE_TASK=false
     . "${_pps_config}/$1"
     __pps_set-up
     export _pps_current_project="$1"
@@ -76,12 +77,16 @@ __pps_switch_profile() {
 
 __pps_switch_task() {
     logDebug "__pps_switch_task() $1"
-    if [ ! -z ${_pps_current_project} ] ; then
-        export _pps_current_task="$1"
-        __pps_write_task_cache "$1"
+    if [ "$PPS_ENABLE_TASK" = true ] ; then
+        if [ ! -z ${_pps_current_project} ] ; then
+            export _pps_current_task="$1"
+            __pps_write_task_cache "$1"
+        else
+            echo "Cannot switch task, first choose a profile!\n"
+            __pps_print_usage
+        fi
     else
-        echo "Cannot switch task, first choose a profile!\n"
-        __pps_print_usage
+        echo "Task feature disabled for current project"
     fi
 }
 
@@ -142,7 +147,9 @@ __pps_complete() {
         complete_list=$(\ls -1 "${_pps_config}"/ |grep -v template)
         complete_list+=" clean"
         complete_list+=" status"
-        complete_list+=" task"
+        if [ "$PPS_ENABLE_TASK" = true ] ; then
+            complete_list+=" task"
+        fi
     elif [[ $prev_word == "task" && ! -z ${_pps_current_project} ]] ; then
         cache_file="${_pps_task_cache}/${_pps_current_project}"
         complete_list=$(cat $cache_file)
