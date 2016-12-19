@@ -25,10 +25,20 @@ __pps_disable_task() {
 pps | assertEcho "__pps_print_usage" "should print usage"
 
 
-
 # should switch profile
+__pps_disable_task() {
+    : 
+}
 _pps_config=/etc
-pps hostname | assertEcho "__pps_switch_profile" "should switch profile"
+pps hostname | assertEcho "__pps_switch_profile" "select a project should switch profile"
+__pps_disable_task() {
+    echo "__pps_disable_task"
+}
+__pps_switch_profile() {
+    : 
+}
+pps hostname | assertEcho "__pps_disable_task" "select a project should disable task"
+
 
 
 # should disable profile
